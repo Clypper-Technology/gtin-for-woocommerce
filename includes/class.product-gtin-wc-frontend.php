@@ -53,7 +53,10 @@ class WPM_Product_GTIN_WC_Frontend {
             'wpm_pgw_cart',
             'wpm_pgw_checkout_page',
             'wpm_pgw_search_by_code',
-            'wpm_pgw_order_item_meta'
+            'wpm_pgw_order_item_meta',
+            'wpm_pgw_position',
+            'wpm_pgw_public_label',
+            'wpm_pgw_hide_code_empty'
         ] );
 
         add_shortcode( 'wpm_product_gtin', array( $this, 'product_gtin_shortcode' ) );
@@ -89,7 +92,7 @@ class WPM_Product_GTIN_WC_Frontend {
      * Show the code in a specified position inside the single product page.
      */
     public function show_code_on_single_product_page() {
-        $position                = get_option( 'wpm_pgw_position', 'meta' );
+        $position                = $this->options['wpm_pgw_position'];
         $priority                = 10;
         $action                  = '';
         $priority_single_excerpt = has_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt' );
@@ -141,7 +144,7 @@ class WPM_Product_GTIN_WC_Frontend {
      */
     public function display_order_item_data( $item, $cart_item_key, $values ) {
 
-        $label = get_option( 'wpm_pgw_public_label', __( 'EAN', 'product-gtin-ean-upc-isbn-for-woocommerce' ) );
+        $label = $this->options['wpm_pgw_public_label'];
         $label = substr( $label, - 1 ) == ':' ? str_replace( ':', '', $label ) : $label;
 
         if ( isset( $values['data'] ) ) {
@@ -162,12 +165,11 @@ class WPM_Product_GTIN_WC_Frontend {
         $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_script( 'wpm_product_gtin_frontend', WPM_PRODUCT_GTIN_WC_ASSETS_URL . '/js/product-gtin-wc-frontend' . $suffix . '.js', array( 'jquery' ), WPM_PRODUCT_GTIN_WC_VERSION, true );
         wp_localize_script( 'wpm_product_gtin_frontend', 'wpm_product_gtin', array(
-            'hide_is_empty' => get_option( 'wpm_pgw_hide_code_empty', 'no' )
+            'hide_is_empty' => $this->options['wpm_pgw_hide_code_empty']
         ) );
     }
 
     public function show_code() {
-
         echo do_shortcode( "[wpm_product_gtin]" );
     }
 
@@ -175,7 +177,6 @@ class WPM_Product_GTIN_WC_Frontend {
      * @param $atts array
      *
      * @return string
-     * @author Emanuela Castorina <emanuela.castorina@yithemes.com>
      */
     public function product_gtin_shortcode( $atts ) {
         global $post;
@@ -227,7 +228,6 @@ class WPM_Product_GTIN_WC_Frontend {
      * Only output allowed HTML tags in the wrapper attribute.
      *
      * @since    1.1.2
-     * @author Casper Holten
      */
     private function product_gtin_validate_wrapper( $wrapper ) {
 
@@ -282,7 +282,6 @@ class WPM_Product_GTIN_WC_Frontend {
      * @param $cart_item
      *
      * @return mixed
-     * @author Emanuela Castorina <emanuela.castorina@yithemes.com>
      */
     public function show_code_on_cart( $item_data, $cart_item ) {
         if ( ! isset( $cart_item['data'] ) ) {

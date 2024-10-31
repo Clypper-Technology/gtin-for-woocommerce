@@ -10,11 +10,11 @@ Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The **Product GTIN (EAN, UPC, ISBN) for WooCommerce** plugin adds the Global Trade Item Number (EAN, UPC, ISBN, JAN, ITF-14) field to WooCommerce products.
+The **GTIN for WooCommerce** plugin adds the Global Trade Item Number (EAN, UPC, ISBN, JAN, ITF-14) field to WooCommerce products.
 
 == Description ==
 
-**Product GTIN (EAN, UPC, ISBN) for WooCommerce** lets you set the GTIN (Global Trade Item Number) for each product of your shop.
+**GTIN for WooCommerce** lets you set the GTIN (Global Trade Item Number) for each product of your shop.
 By default, WooCommerce allows to set the SKU custom field for a product, but sometimes the SKU isn't enough.
 Google and Amazon use global trade item numbers (GTINs) to group identical products.
 The most common GTINs are:
